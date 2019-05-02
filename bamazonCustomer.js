@@ -49,7 +49,7 @@ displayInventory();
 
 function selectProduct() {
 
-    connection.query("SELECT * FROM products;", function(err, result, fields) {
+    connection.query("SELECT * FROM products;", function(err, results, fields) {
 
 
         if (err) throw err; 
@@ -81,7 +81,7 @@ function selectProduct() {
 selectProduct();
 function stockQuery (id, quantity) {
     var query = "SELECT stock_quantity FROM products WHERE item_id=" + id + ";";
-    connection.query(query, function(err, result) {
+    connection.query(query, function(err, response) {
 
         if (err) throw error; 
  
@@ -105,12 +105,26 @@ function stockQuery (id, quantity) {
             console.log(
                 "Out of stock"
             ); 
+            displayInventory();
+            selectProduct();
 
 
         }
     });
 }
 
+function calculatePrice(id, quantity) {
+    connection.query("SELECT price from products WHERE item_id=" + id, function(
+      error, results) 
+      {
+      if (error) throw error;
+      var total = results[0].price * quantity;
+      console.log(
+        "Congratulations your order is complete! Your total is: $" + total
+      );
+    });
+  }
+  
 
 
 
