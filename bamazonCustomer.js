@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
     port: 8889, 
 
     user: "root",
-    password: "",
+    password: "root",
     database: "bamazon_db"
 
 });
@@ -69,8 +69,8 @@ function selectProduct() {
 
                 }
             ])
-            .then(answer => {
-                checkStock(answers.id, answers.quantity);
+            .then(answers => {
+                stockQuery(answers.id, answers.quantity);
 
         
             });
@@ -99,7 +99,7 @@ function stockQuery (id, quantity) {
 
                 }
             ]);
-            newPrice(id, quantity);
+            calculatePrice(id, quantity);
             
         } else { 
             console.log(
