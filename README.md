@@ -21,3 +21,24 @@ The Customer View is where customers order from Bamazon. It will ask which item 
 Customer View - Lets the user scroll through available products to select one to purchase or e) to return to the main menu;
 
 Customer Order - Once user selects an item they will be prompted how many they would like to purchase and the app will check the current stock. If there is stock available their order will go through.
+
+#Manager
+
+The Manager Panel is where Managers can login via a password and manage the inventory. They have the ability to select the options to View All Inventory, View Low Inventory, Add Inventory, and Add New Product.
+
+
+Manager View Inventory - This allows the Manager to view a table of the current inventory.
+
+Manager View Low Inventory - This allows the Manager to view a table of all inventory items with low stock quantities.
+
+Manager Add Inventory - This allows the Manager to order move inventory for a particular item based on the item ID#.
+
+Manager Add New Inventory - This allows the Manager to add an entirely new product to the inventory.
+
+#Supervisor
+
+The Supervisor Panel is where Supervisors can login via a password and get detailed business reports about current Product Sales or add a new product department. They have the ability to select the options to View Product Sales by Department, and Add New Department.
+
+Supervisor View Product Sales by Department - This allows the Supervisor to view a table of the current departments and their total profits based on their sales and over head.
+
+Supervisor Add New Department - This allows the Supervisor to add an entirely new department to be used in the inventory.
