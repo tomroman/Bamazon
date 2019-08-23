@@ -34,6 +34,48 @@ let Supervisor = function(sql) {
                         console.log(dbTable.toString() + "\n");
                         that.start(callback);
                     });
+                    break;
+                case 'n':
+                    console.log("====== Add A New Department ======");
+                    inquirer.prompt([
+                        {
+                            name:"departmentName",
+                            type:"input",
+                            message: "What is the name of the department?",
+                            validate: function(str){
+                                if(str !== ""){
+                                    return true;
+                                }
+                                return 'Please enter a department name.';
+                            }
+                        },
+                        {
+                            name:"overHead",
+                            type:"input",
+                            message:"What is the department overhead cost?",
+                            validate: function(value){
+                                var price = value.match(/^[0-9]+(\.[0-9]{1,2})?$/);
+                                if(price){
+                                    return true;
+                                }
+                                return 'Please enter an amount: ex - 19999.99';
+                            }
+                            
+                        },
+                    ]).then(function(answer){
+                        that.sql.query("INSERT INTO departments SET ?",{
+                            department_name:answer.departmentName,
+                            over_head_cost: parseFloat(answer.overHead),               
+                        }, function(err, res){
+                            if(err) throw err;
+                            console.log(answer.departmentName + " has been added.\n");
+                            that.start(callback);
+                        });
+                    });
+                    break;
+                case 'e':
+                    callback(true);
+                    break;
                 
         }
       });
