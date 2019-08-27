@@ -23,7 +23,7 @@ let Manager = function(sql) {var Manager = function(sql){
                 case 'i':
                     that.sql.query("SELECT * FROM products", function(err, res){
                         if(err) throw err;
-                        var dbTable = new Table({
+                        let dbTable = new Table({
                             head: ['Item ID', 'Product', 'Department', 'Price', 'Stock Qty'],
                             colWidths: [10, 50, 30, 12, 20]
                         });
@@ -34,7 +34,24 @@ let Manager = function(sql) {var Manager = function(sql){
                         console.log(dbTable.toString() + "\n");
                         that.start(callback);
                     });
-                    
+                    break;
+                case 'l' :
+                    console.log("Viewing Low Inventory...");
+                    that.sql.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, res){
+                        if(err) throw err;
+                        let dbTable = new Table({
+                            head: ['Item ID', 'Product', 'Department', 'Price', 'Stock Qty'],
+                            colWidths: [10, 50, 30, 12, 20]
+                        });
+                        res.forEach(function(product){
+                            dbTable.push([product.item_id, product.product_name, product.department_name, product.price, product.stock_quantity]);
+                        });
+
+                        console.log(dbTable.toString() + "\n");
+                        that.start(callback);
+                    });
+                    break;
+
 
     }
   }
