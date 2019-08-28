@@ -51,6 +51,49 @@ let Manager = function(sql) {var Manager = function(sql){
                         that.start(callback);
                     });
                     break;
+                    case 'a':
+                        inquirer.prompt([
+                            {
+                                name:"itemId",
+                                type:"input",
+                                message: "Which product would you like to order more stock for? (Please enter ID#)",
+                                validate: function(value){
+                                    var itemId = value.match(/^[0-9]+$/);
+                                    if(itemId){
+                                        return true;
+                                    }
+                                    return 'Please enter a valid ID#';
+                                }
+                            },
+                            {
+                                name:"stockQty",
+                                type:"input",
+                                message:"How much should we order?",
+                                validate: function(value){
+                                    var stock = value.match(/^[0-9]+$/);
+                                    if(stock){
+                                        return true;
+                                    }
+                                    return 'Please enter an amount.';
+                                }
+                                
+                            }
+                        ]).then(function(answer){
+                            that.sql.query("SELECT * FROM products WHERE ?", { item_id: parseInt(answer.itemId) }, 
+                            function(err, res){
+                                that.sql.query("UPDATE products SET ? WHERE ?",[{
+                                    stock_quantity: (res[0].stock_quantity + parseInt(answer.stockQty))
+                                },{
+                                    item_id: parseInt(answer.itemId)
+                                }], function(err, res){
+                                    if(err) throw err;
+                                    console.log(res.affectedRows + " item(s) have been updated.\n");
+                                    that.start(callback);
+                                });
+                            });
+                        });
+
+                    break;
 
 
     }
