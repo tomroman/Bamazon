@@ -94,8 +94,78 @@ let Manager = function(sql) {var Manager = function(sql){
                         });
 
                     break;
-
-
+                    case 'n':
+                        console.log("====== Add A New Product ======");
+                        inquirer.prompt([
+                            {
+                                name:"productName",
+                                type:"input",
+                                message: "What is the name of the product?",
+                                validate: function(str){
+                                    if(str !== ""){
+                                        return true;
+                                    }
+                                    return 'Please enter a product name.';
+                                }
+                            },
+                            {
+                                name:"departmentName",
+                                type:"input",
+                                message: "What is the name of the department?",
+                                validate: function(str){
+                                    if(str !== ""){
+                                        return true;
+                                    }
+                                    return 'Please enter a department name.';
+                                }
+                            },
+                            {
+                                name:"price",
+                                type:"input",
+                                message:"What is the price of the product?",
+                                validate: function(value){
+                                    var price = value.match(/^[0-9]+(\.[0-9]{1,2})?$/);
+                                    if(price){
+                                        return true;
+                                    }
+                                    return 'Please enter an amount. ex: 199.99';
+                                }
+                                
+                            },
+                            {
+                                name:"stockQty",
+                                type:"input",
+                                message:"How much should we order?",
+                                validate: function(value){
+                                    let stock = value.match(/^[0-9]+$/);
+                                    if(stock){
+                                        return true;
+                                    }
+                                    return 'Please enter an amount.';
+                                }
+                                
+                            }
+                        ]).then(function(answer){
+                            that.sql.query("INSERT INTO products SET ?",{
+                                product_name: answer.productName,
+                                department_name:answer.departmentName,
+                                price: parseFloat(answer.price),
+                                stock_quantity: parseInt(answer.stockQty)                
+                            }, function(err, res){
+                                if(err) throw err;
+                                console.log(answer.productName + " has been added.\n");
+                                that.start(callback);
+                            });
+                        });
+                        break;
+                    case 'e':
+                        callback(true);
+                        break;
+                }
+            });
+        }
     }
-  }
-};
+    
+    module.exports = Manager;
+
+                
