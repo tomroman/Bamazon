@@ -80,14 +80,14 @@ function selectProduct() {
 
 selectProduct();
 function stockQuery (id, quantity) {
-    var query = "SELECT stock_quantity FROM products WHERE item_id=" + id + ";";
+    let query = "SELECT stock_quantity FROM products WHERE item_id=" + id + ";";
     connection.query(query, function(err, response) {
 
         if (err) throw error; 
  
         if (quantity <= response[0].stock_quantity) {
 
-            var newQuantity = response[0].stock_quantity - quantity;
+            let newQuantity = response[0].stock_quantity - quantity;
             
             connection.query("UPDATE products SET ? WHERE item_id=" + id, [
 
