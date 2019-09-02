@@ -19,4 +19,26 @@ let runPChoices = [
 let managerPass = "Bamazon2019";
 let supervisorPass = "BamazonSuper2019";
 
+function loadCommand (command) {
+    switch(command) {
+        case "Customer":
+            let newCustomer = newCustomer(connection);
+            newCustomer.start(runProgram);
+            break;
+        case "Manager":
+            checkPassword();
+            break;
+        case "Supervisor":
+            checkPassword();
+            break;
+        case "Exit":
+            runProgram(false);
+            break;
+        default:
+            console.log("something went wrong. Command: " + command);
+            runProgram(false);
+            break;
+            
 
+    }
+}
