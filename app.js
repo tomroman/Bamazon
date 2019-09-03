@@ -38,7 +38,27 @@ function loadCommand (command) {
             console.log("something went wrong. Command: " + command);
             runProgram(false);
             break;
-            
+
 
     }
+}
+function checkPassword(){
+    inquirer.prompt({
+        name: 'manPass',
+        type: 'input',
+        message: 'Please enter Your Password: (You can type exit to go back to the main menu)' 
+     }).then(function(answer){
+         if(answer.manPass === 'exit'){
+             runProgram(true);
+         } else if(answer.manPass === managerPass){
+             let newManager = new Manager(connection);
+             newManager.start(runProgram);
+         } else if(answer.manPass === supervisorPass){
+            let newSupervisor = new Supervisor(connection);
+            newSupervisor.start(runProgram);
+        } else {
+             console.log("Sorry wrong password!");
+             checkPassword();
+         }
+     });
 }
