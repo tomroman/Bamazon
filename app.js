@@ -62,3 +62,31 @@ function checkPassword(){
          }
      });
 }
+function runProgram(run){
+    if(run){
+        console.log('\x1Bc');
+        var message =   
+                '============================== \n' +
+                '  =      Welcome to Bamazon    = \n' +
+                '  = What would you like to do? = \n' +
+                '  ============================== \n';
+
+        inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'choice',
+            message: message,
+            choices: runPChoices
+          }
+        ])
+        .then(answers => {
+          loadCommand(answers.choice.split(":")[0]);
+        });
+    } else {
+        console.log( "\nThanks for using Bamazon! Exiting Program...\n");
+        connection.end();
+        process.exit();
+    } 
+    
+}
