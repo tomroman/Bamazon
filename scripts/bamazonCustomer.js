@@ -125,6 +125,8 @@ function calculatePrice(id, quantity) {
     });
   }
   
+  module.exports = Customer;
+  
 
 
 
