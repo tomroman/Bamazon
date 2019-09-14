@@ -165,7 +165,8 @@ let Manager = function(sql) {var Manager = function(sql){
             });
         }
     }
+}
     
-    module.exports = Manager;
+    module.exports = Manager
 
                 

@@ -1,132 +1,73 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
-var Table = require("cli-table");
+let mysql = require("mysql");
+let inquirer = require("inquirer");
 
-var connection = mysql.createConnection({
-
-    host: "localhost", 
-
-    port: 8889, 
-
-    user: "root",
-    password: "root",
-    database: "bamazon_db"
-
-});
-
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-    });
-
-function displayInventory () {
-    console.log("Select a product");
-
-    connection.query("SELECT * FROM products", function (err, result, fields) {
-        if (err) throw err;
-        
-	var table = new Table({
-        head: ["item_id", "product_name", "price"],
-        colWidths: [10,15,15]
-		
-	});
-
-	
-	for(var i = 0; i < result.length; i++){
-		table.push(
-            [result[i].item_id, 
-            result[i].product_name, 
-            result[i].price]
-		);
-	}
-	console.log(table.toString());
-
-	
-});
-}
-
-displayInventory();
-
-function selectProduct() {
-
-    connection.query("SELECT * FROM products;", function(err, results, fields) {
-
-
-        if (err) throw err; 
-        inquirer 
-            .prompt([
-                {
-                    type: "input", 
-                    message: "Choose product by item id", 
-                    name: "id"
-
-
-                }, 
-                {
-                    type: "input",
-                    message: "How many would you like to purchase?", 
-                    name: "quantity"
-
-                }
-            ])
-            .then(answers => {
-                stockQuery(answers.id, answers.quantity);
-
-        
+var Customer = function(sql){
+    this.sql = sql;
+    this.start = function(callback){
+        var that = this;
+        var items = [];
+        this.sql.query("SELECT * FROM products", function(err, res){
+            if(err)throw err;
+            res.forEach(function(item){
+                items.push( item.item_id + ") " + item.product_name + " price: $" + item.price);                                        
             });
-        });
-};
-
-
-selectProduct();
-function stockQuery (id, quantity) {
-    let query = "SELECT stock_quantity FROM products WHERE item_id=" + id + ";";
-    connection.query(query, function(err, response) {
-
-        if (err) throw error; 
- 
-        if (quantity <= response[0].stock_quantity) {
-
-            let newQuantity = response[0].stock_quantity - quantity;
-            
-            connection.query("UPDATE products SET ? WHERE item_id=" + id, [
-
+            items.push("e) Return to Main Menu.");
+            inquirer.prompt(
                 {
-                    stock_quantity: newQuantity
-                },
-                {
-                    id: id
-
+                    name: 'purchase',
+                    type: 'list',
+                    message: 'Which item would you like to purchase?',
+                    choices:items
                 }
-            ]);
-            calculatePrice(id, quantity);
-            
-        } else { 
-            console.log(
-                "Out of stock"
-            ); 
-            displayInventory();
-            selectProduct();
+            ).then(function(answer){
+                var choice = answer.purchase.split(')')[0];
+                if(choice === 'e'){
+                    callback(true);
+                } else{
+                    inquirer.prompt({
+                        name: 'purchaseNum',
+                        type: 'input',
+                        message: 'How many would you like to buy?',
+                        validate: function(value){
+                            var quantity = value.match(/^[0-9]+$/);
+                            if(quantity){
+                                return true;
+                            }
+                            return 'Please enter a number.';
+                        }
+                    }).then(function(answer){
+                        that.purchase(choice, answer.purchaseNum, res[choice-1], callback);
+                    });
+                }
+                return;
+            });
+        });    
+    }
 
-
+    this.purchase = function(choice, amount, dbItem, callback){
+        var quantity = parseInt(amount);
+        var reduceStock = dbItem.stock_quantity - quantity;
+        var purchasePrice = dbItem.product_sales + (quantity * parseFloat(dbItem.price));
+        if(reduceStock >= 0){ 
+            this.sql.query( "UPDATE products SET ? WHERE ?", [{
+                stock_quantity: reduceStock,
+                product_sales: purchasePrice
+            }, {
+                item_id: parseInt(choice)
+            }], function(err, res){
+                if(err) throw err;
+                console.log("Your order has been successfully placed. Total Cost: $" + (quantity * parseFloat(dbItem.price)));
+            });
+            this.start(callback);
+        } else {
+            console.log("Insufficient stock quantity! Please check back later");
+            this.start(callback);
         }
-    });
+    }
 }
 
-function calculatePrice(id, quantity) {
-    connection.query("SELECT price from products WHERE item_id=" + id, function(
-      error, results) 
-      {
-      if (error) throw error;
-      var total = results[0].price * quantity;
-      console.log(
-        "Congratulations your order is complete! Your total is: $" + total
-      );
-    });
-  }
-  
   module.exports = Customer;
-  
+
 
 
 
