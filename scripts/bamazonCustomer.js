@@ -1,7 +1,7 @@
 let mysql = require("mysql");
 let inquirer = require("inquirer");
 
-var Customer = function(sql){
+let Customer = function(sql){
     this.sql = sql;
     this.start = function(callback){
         let that = this;
