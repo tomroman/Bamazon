@@ -3,6 +3,7 @@ let mysql = require('mysql');
 let Customer = require('./scripts/bamazonCustomer.js');
 let Manager = require('./scripts/bamazonManager.js');
 let Supervisor = require('./scripts/bamazonSupervisor.js');
+let databaseKey = require('./database_key.js');
 
 
 let connection = mysql.createConnection(databaseKey);

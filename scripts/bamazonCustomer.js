@@ -4,8 +4,8 @@ let inquirer = require("inquirer");
 var Customer = function(sql){
     this.sql = sql;
     this.start = function(callback){
-        var that = this;
-        var items = [];
+        let that = this;
+        let items = [];
         this.sql.query("SELECT * FROM products", function(err, res){
             if(err)throw err;
             res.forEach(function(item){
@@ -45,9 +45,9 @@ var Customer = function(sql){
     }
 
     this.purchase = function(choice, amount, dbItem, callback){
-        var quantity = parseInt(amount);
-        var reduceStock = dbItem.stock_quantity - quantity;
-        var purchasePrice = dbItem.product_sales + (quantity * parseFloat(dbItem.price));
+        let quantity = parseInt(amount);
+        let reduceStock = dbItem.stock_quantity - quantity;
+        let purchasePrice = dbItem.product_sales + (quantity * parseFloat(dbItem.price));
         if(reduceStock >= 0){ 
             this.sql.query( "UPDATE products SET ? WHERE ?", [{
                 stock_quantity: reduceStock,
