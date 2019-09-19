@@ -8,7 +8,7 @@ let databaseKey = require('./database_key.js');
 
 let connection = mysql.createConnection(databaseKey);
 
-let runp = true;
+let runP = true;
 let runPChoices = [
     'Customer: Order a product',
     new inquirer.Separator(),
