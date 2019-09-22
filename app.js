@@ -6,7 +6,7 @@ let Supervisor = require('./scripts/bamazonSupervisor.js');
 let databaseKey = require('./database_key.js');
 
 
-let connection = mysql.createConnection(databaseKey);
+let connection = mysql.createConnection(databasekey);
 
 let runP = true;
 let runPChoices = [
@@ -23,7 +23,7 @@ let supervisorPass = "BamazonSuper2019";
 function loadCommand (command) {
     switch(command) {
         case "Customer":
-            let newCustomer = newCustomer(connection);
+            let newCustomer = new Customer(connection);
             newCustomer.start(runProgram);
             break;
         case "Manager":
