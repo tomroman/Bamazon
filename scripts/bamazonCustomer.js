@@ -20,7 +20,7 @@ let Customer = function(sql){
                     choices:items
                 }
             ).then(function(answer){
-                var choice = answer.purchase.split(')')[0];
+                let choice = answer.purchase.split(')')[0];
                 if(choice === 'e'){
                     callback(true);
                 } else{
@@ -29,7 +29,7 @@ let Customer = function(sql){
                         type: 'input',
                         message: 'How many would you like to buy?',
                         validate: function(value){
-                            var quantity = value.match(/^[0-9]+$/);
+                            let quantity = value.match(/^[0-9]+$/);
                             if(quantity){
                                 return true;
                             }
