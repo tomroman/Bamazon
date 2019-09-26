@@ -70,7 +70,7 @@ let Manager = function(sql) {let Manager = function(sql){
                                 type:"input",
                                 message:"How much should we order?",
                                 validate: function(value){
-                                    var stock = value.match(/^[0-9]+$/);
+                                    let stock = value.match(/^[0-9]+$/);
                                     if(stock){
                                         return true;
                                     }
@@ -124,7 +124,7 @@ let Manager = function(sql) {let Manager = function(sql){
                                 type:"input",
                                 message:"What is the price of the product?",
                                 validate: function(value){
-                                    var price = value.match(/^[0-9]+(\.[0-9]{1,2})?$/);
+                                    let price = value.match(/^[0-9]+(\.[0-9]{1,2})?$/);
                                     if(price){
                                         return true;
                                     }
