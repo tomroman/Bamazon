@@ -58,7 +58,7 @@ let Manager = function(sql) {let Manager = function(sql){
                                 type:"input",
                                 message: "Which product would you like to order more stock for? (Please enter ID#)",
                                 validate: function(value){
-                                    var itemId = value.match(/^[0-9]+$/);
+                                    let itemId = value.match(/^[0-9]+$/);
                                     if(itemId){
                                         return true;
                                     }
