@@ -54,7 +54,7 @@ let Supervisor = function(sql) {
                             type:"input",
                             message:"What is the department overhead cost?",
                             validate: function(value){
-                                var price = value.match(/^[0-9]+(\.[0-9]{1,2})?$/);
+                                let price = value.match(/^[0-9]+(\.[0-9]{1,2})?$/);
                                 if(price){
                                     return true;
                                 }
